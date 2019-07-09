@@ -36,7 +36,6 @@ const (
 	ReplaceConcurrent ConcurrencyPolicy = "Replace"
 )
 
-
 // CronJobSpec defines the desired state of CronJob
 type CronJobSpec struct {
 	// Cronフォーマットのスケジュール
@@ -69,7 +68,6 @@ type CronJobSpec struct {
 	FailedJobsHistoryLimit *int32 `json:"failedJobsHistoryLimit,omitempty"`
 }
 
-
 // CronJobStatus defines the observed state of CronJob
 type CronJobStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
@@ -83,7 +81,6 @@ type CronJobStatus struct {
 	// +optional
 	LastScheduleTime *metav1.Time `json:"lastScheduleTime,omitempty"`
 }
-
 
 // +kubebuilder:object:root=true
 

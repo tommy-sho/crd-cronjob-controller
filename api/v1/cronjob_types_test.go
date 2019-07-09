@@ -16,8 +16,13 @@ limitations under the License.
 package v1
 
 import (
+	"time"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	v1 "k8s.io/api/batch/v1"
+	"k8s.io/api/batch/v1beta1"
+	v12 "k8s.io/api/core/v1"
 
 	"golang.org/x/net/context"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -53,11 +58,34 @@ var _ = Describe("CronJob", func() {
 				Name:      "foo",
 				Namespace: "default",
 			}
+
 			created = &CronJob{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "foo",
 					Namespace: "default",
-				}}
+				},
+				Spec: CronJobSpec{
+					JobTemplate: v1beta1.JobTemplateSpec{
+						ObjectMeta: metav1.ObjectMeta{
+							CreationTimestamp: metav1.Time{
+								Time: time.Now(),
+							},
+						},
+						Spec: v1.JobSpec{
+							Template: v12.PodTemplateSpec{
+								ObjectMeta: metav1.ObjectMeta{
+									CreationTimestamp: metav1.Time{
+										Time: time.Now(),
+									},
+								},
+								Spec: v12.PodSpec{
+									Containers: []v12.Container{},
+								},
+							},
+						},
+					},
+				},
+			}
 
 			By("creating an API obj")
 			Expect(k8sClient.Create(context.TODO(), created)).To(Succeed())
